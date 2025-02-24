@@ -1,0 +1,93 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.xxx.aireview</id>
+
+    <name>AI Code Review</name>
+
+    <vendor email="">xxx</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>
+    <![CDATA[
+    <h3>This plugin uses AI to automatically generate review messages based on the selected code.</h3>
+    
+
+    <h3>Supported Models:</h3>
+    <ul>
+        <li>Support for DeepSeek.</li>
+        <li>Support for Ollama.</li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <li>Select the code you want to review.</li>
+        <li>Right Click and choose the "AICodeReview" button.</li>
+        <li>The generated review message will be displayed in a new window.</li>
+    </ul>
+
+    <h3>Custom Prompts:</h3>
+    <ul>
+        <li>You can add, edit, and delete custom prompts in the settings.</li>
+        <li>Custom prompts will be used when generating review messages.</li>
+    </ul>
+    ]]>
+    </description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.vcs</depends>
+    <depends>Git4Idea</depends>
+
+
+    <!-- Extension points defined by the plugin.
+     Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- 注册欢迎通知活动 -->
+        <postStartupActivity implementation="com.xxx.aireview.WelcomeNotification"/>
+        <!-- 声明通知组 -->
+        <notificationGroup id="AI Code Review Notifications" displayType="BALLOON"/>
+        <!--        <applicationConfigurable instance="config.com.xxx.aireview.ApiKeyConfigurable"-->
+        <!--            displayName="AI Git Commit"/>-->
+        <applicationConfigurable instance="com.xxx.aireview.config.ApiKeyConfigurable"
+                                 id="aireview.settings"
+                                 displayName="AI Code Review"
+                                 groupId="Tools"/>
+        <applicationService serviceImplementation="com.xxx.aireview.config.ApiKeySettings"/>
+    </extensions>
+
+    <actions>
+        <group id="AICodeReview"
+               text="AICodeReview"
+               popup="true"
+               description="code review using AI modules">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+
+            <action id="cleanCode"
+                    class="com.xxx.aireview.GenerateCommitMessageAction"
+                    text="代码整洁优化"
+                    description="Direct review selected text code"/>
+            <action id="reconstruction"
+                    class="com.xxx.aireview.GenerateCommitMessageAction"
+                    text="代码重构建议"
+                    description="Direct review selected text code"/>
+            <action id="faultReview"
+                    class="com.xxx.aireview.GenerateCommitMessageAction"
+                    text="代码逻辑检视"
+                    description="Direct review selected text code"/>
+        </group>
+    </actions>
+
+
+    <change-notes>
+        <![CDATA[
+        <h3>Detail:</h3>
+        <ul>
+            <li>first publis version</li>
+        </ul>
+        ]]>
+    </change-notes>
+
+</idea-plugin>
